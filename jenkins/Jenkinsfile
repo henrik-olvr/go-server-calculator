@@ -13,8 +13,12 @@ pipeline {
                 #!/bin/bash
                 kubectl apply -f k8s/deployment.yaml
                 kubectl apply -f k8s/service.yaml
-                minikube service go-server-calculator-svc
                 """
+            }
+        }
+        stage ('Getting Service IP') {
+            steps {
+                sh 'minikube service go-server-calculator-svc'
             }
         }
     }
