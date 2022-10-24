@@ -7,25 +7,16 @@ pipeline {
             	git branch: 'master', url: "https://github.com/henrik-olvr/go-server-calculator.git"
             }
         }
-        stage ('Creating Cluster Using Minikube') {
+        stage ('Deploy to Kubernetes Cluster') {
             steps {
-                sh 'cd ..'
-            	sh 'minikube start'
+                sh """
+                #!/bin/bash
+                cd ..
+                minikube start
+                kubectl apply -f k8s/
+                minikube service go-server-calculator-svc
+                """
             }
-        }
-        stage ('Applying Deployment and Service') {
-            steps {
-        	    sh """
-        	    #!/bin/bash
-        	    kubectl apply -f k8s/deployment.yaml
-        	    kubectl apply -f k8s/service.yaml
-        	    """
-        	}
-        }
-        stage ('Getting Service IP') {
-            steps {
-        	    sh 'minikube service go-server-calculator-svc'
-        	}
         }
     }
 }
