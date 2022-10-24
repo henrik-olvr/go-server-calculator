@@ -13,7 +13,8 @@ pipeline {
                 #!/bin/bash
                 cd ..
                 minikube start
-                kubectl apply -f k8s/
+                kubectl apply -f k8s/deployment.yaml
+                kubectl apply -f k8s/service.yaml
                 minikube service go-server-calculator-svc
                 """
             }
