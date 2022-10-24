@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage ('Clone Repository') {
+            steps {
+            	git branch: 'master', url: "https://github.com/henrik-olvr/go-server-calculator.git"
+            }
+        }
+        stage ('Creating Cluster Using Minikube') {
+            steps {
+            	sh 'minikube start'
+            }
+        }
+        stage ('Applying Deployment and Service') {
+        	steps {
+        		sh """
+        		#!/bin/bash
+        		kubectl apply -f k8s/deployment.yaml
+        		kubectl apply -f k8s/service.yaml
+        		"""
+        	}
+        }
+        stage ('Getting Service IP') {
+        	steps {
+        		sh 'minikube service go-server-calculator-svc'
+        	}
+        }
+    }
+}

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-server-calculator-deployment
+  labels:
+    app: go-server-calculator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-server-calculator
+  template:
+    metadata:
+      labels:
+        app: go-server-calculator
+    spec:
+      containers:
+      - name: go-server-calculator
+        image: henrikol/go-server-calculator:latest
+        ports:
+        - containerPort: 8080
