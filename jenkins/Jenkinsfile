@@ -9,21 +9,22 @@ pipeline {
         }
         stage ('Creating Cluster Using Minikube') {
             steps {
+                sh 'cd ..'
             	sh 'minikube start'
             }
         }
         stage ('Applying Deployment and Service') {
-        	steps {
-        		sh """
-        		#!/bin/bash
-        		kubectl apply -f k8s/deployment.yaml
-        		kubectl apply -f k8s/service.yaml
-        		"""
+            steps {
+        	    sh """
+        	    #!/bin/bash
+        	    kubectl apply -f k8s/deployment.yaml
+        	    kubectl apply -f k8s/service.yaml
+        	    """
         	}
         }
         stage ('Getting Service IP') {
-        	steps {
-        		sh 'minikube service go-server-calculator-svc'
+            steps {
+        	    sh 'minikube service go-server-calculator-svc'
         	}
         }
     }
